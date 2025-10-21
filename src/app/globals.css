@@ -1,26 +1,94 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+@theme {
+  /* === CORES BASE === */
+  --background: 220 18% 8%;
+  --foreground: 0 0% 98%;
+
+  --card: 220 15% 12%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 220 15% 12%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 168 100% 36%;
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 220 15% 18%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 220 15% 15%;
+  --muted-foreground: 0 0% 65%;
+
+  --accent: 168 100% 36%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 220 15% 18%;
+  --input: 220 15% 18%;
+  --ring: 168 100% 36%;
+
+  --radius: 0.75rem;
+
+  /* === SIDEBAR === */
+  --sidebar-background: 220 18% 10%;
+  --sidebar-foreground: 0 0% 90%;
+  --sidebar-primary: 168 100% 36%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 220 15% 15%;
+  --sidebar-accent-foreground: 0 0% 98%;
+  --sidebar-border: 220 15% 18%;
+  --sidebar-ring: 168 100% 36%;
+
+  /* === CUSTOM TOKENS === */
+  --success: 168 100% 36%;
+  --warning: 38 92% 50%;
+  --info: 199 89% 48%;
+
+  /* === GRADIENTES === */
+  --gradient-primary: linear-gradient(135deg, hsl(168 100% 36%), hsl(168 100% 45%));
+  --gradient-dark: linear-gradient(180deg, hsl(220 18% 8%), hsl(220 18% 12%));
+
+  /* === SOMBRAS === */
+  --shadow-glow: 0 0 20px hsl(168 100% 36% / 0.3);
+  --shadow-card: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -1px hsl(0 0% 0% / 0.2);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* === ESTILOS GERAIS === */
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+/* === UTILITÁRIOS === */
+@layer components {
+  .gradient-primary {
+  background: var(--gradient-primary);
+}
+
+.gradient-dark {
+  background: var(--gradient-dark);
+}
+
+.shadow-glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
 }

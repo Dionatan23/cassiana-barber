@@ -1,103 +1,219 @@
-import Image from "next/image";
+"use client";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useRouter } from "next/navigation";
+import Header from "@/components/Header";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Scissors, Clock, Star, MapPin, Phone, Mail } from "lucide-react";
+import heroImage from "@/assets/hero-barbershop.jpg";
+import { servicos } from "@/lib/mockData";
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const router = useRouter();
+  const iconMap: Record<string, any> = {
+    Scissors,
+    Razor: Scissors,
+    Sparkles: Star,
+    Star,
+    Brush: Scissors,
+  };
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  return (
+    <div className="min-h-screen">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage: `url(${heroImage.src})`,
+            filter: "brightness(0.4)",
+          }}
+        />
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <h1 className="text-5xl md:text-7xl font-bold mb-6">
+            Seu Estilo,
+            <span className="text-primary block mt-2">Nosso Compromisso</span>
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Agende seu horário online e garanta o melhor atendimento da cidade
+          </p>
+          <Button
+            onClick={() => router.push("/agenda")}
+            asChild
+            size="lg"
+            className="gradient-primary shadow-glow text-lg px-8 py-6"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            Agendar Meu Horário
+          </Button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Sobre Section */}
+      <section id="sobre" className="py-20 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-6">Sobre a Barbearia</h2>
+            <p className="text-lg text-muted-foreground leading-relaxed">
+              Com mais de 10 anos de experiência, oferecemos os melhores
+              serviços de barbearia com profissionais qualificados e produtos de
+              primeira linha. Aqui, cada cliente é único e merece um atendimento
+              personalizado.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Serviços Section */}
+      <section id="servicos" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Nossos Serviços
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {servicos.map((servico) => {
+              const Icon = iconMap[servico.icone] || Scissors;
+              return (
+                <Card
+                  key={servico.id}
+                  className="p-6 shadow-card hover:shadow-glow transition-all duration-300"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 bg-primary/10 rounded-lg">
+                      <Icon className="h-6 w-6 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-bold text-xl mb-2">{servico.nome}</h3>
+                      <p className="text-muted-foreground mb-3">
+                        <Clock className="inline h-4 w-4 mr-1" />
+                        {servico.duracao} minutos
+                      </p>
+                      <p className="text-2xl font-bold text-primary">
+                        R$ {servico.preco.toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* Horários Section */}
+      <section className="py-20 bg-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-4xl font-bold mb-8">Horários de Funcionamento</h2>
+            <div className="space-y-4 text-lg">
+              <div className="flex justify-between items-center p-4 bg-background rounded-lg">
+                <span className="font-medium">Segunda a Sexta</span>
+                <span className="text-primary">09:00 - 19:00</span>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-background rounded-lg">
+                <span className="font-medium">Sábado</span>
+                <span className="text-primary">09:00 - 17:00</span>
+              </div>
+              <div className="flex justify-between items-center p-4 bg-background rounded-lg">
+                <span className="font-medium">Domingo</span>
+                <span className="text-muted-foreground">Fechado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contato Section */}
+      <section id="contato" className="py-20">
+        <div className="container mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center mb-12">
+            Entre em Contato
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <Card className="p-6 text-center shadow-card">
+              <MapPin className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="font-bold mb-2">Endereço</h3>
+              <p className="text-muted-foreground">
+                Rua da Barbearia, 123
+                <br />
+                Centro - São Paulo/SP
+              </p>
+            </Card>
+            <Card className="p-6 text-center shadow-card">
+              <Phone className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="font-bold mb-2">Telefone</h3>
+              <p className="text-muted-foreground">(11) 98765-4321</p>
+              <Button asChild variant="link" className="mt-2 text-primary">
+                <a
+                  href="https://wa.me/5511987654321"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Chamar no WhatsApp
+                </a>
+              </Button>
+            </Card>
+            <Card className="p-6 text-center shadow-card">
+              <Mail className="h-8 w-8 text-primary mx-auto mb-4" />
+              <h3 className="font-bold mb-2">E-mail</h3>
+              <p className="text-muted-foreground">contato@barberpro.com.br</p>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-emerald-950">
+        <div className="container mx-auto px-4 text-center">
+          <h2 className="text-4xl font-bold mb-6">
+            Pronto para Mudar seu Visual?
+          </h2>
+          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
+            Agende seu horário agora e garanta o melhor atendimento
+          </p>
+          <Button
+            onClick={() => router.push("/agenda")}
+            asChild
+            size="lg"
+            className="gradient-primary shadow-glow text-lg px-8 py-6"
+          >
+            Agendar Agora
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-800 border-t border-border py-8">
+        <div className="container mx-auto px-4 text-center text-muted-foreground">
+          <p>&copy; 2025 BarberPro. Todos os direitos reservados.</p>
+          <div className="mt-4 space-x-4">
+            <Button
+              onClick={() => router.push("/agenda")}
+              className="hover:text-primary transition-colors"
+            >
+              Área Admin
+            </Button>
+            <Button
+              onClick={() => router.push("/agenda")}
+              className="hover:text-primary transition-colors"
+            >
+              Área do Barbeiro
+            </Button>
+          </div>
+        </div>
       </footer>
+
+      {/* Floating Action Button */}
+
+      <Button
+        onClick={() => router.push("/agenda")}
+        size="lg"
+        className="fixed bottom-6 right-6 rounded-full shadow-glow gradient-primary h-14 w-14 md:h-auto md:w-auto md:px-6"
+      >
+        <Scissors className="h-5 w-5 md:mr-2" />
+        <span className="hidden md:inline">Agendar</span>
+      </Button>
     </div>
   );
 }
