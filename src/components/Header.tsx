@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Calendar, Menu } from "lucide-react";
-import logo from "@/assets/logo.png";
+import logo from "../../public/favicon.png";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -15,8 +15,8 @@ export default function Header() {
             onClick={() => router.push("/")}
             className="flex items-center gap-3"
           >
-            <Image src={logo} alt="BarberPro" className="h-10 w-10" />
-            <span className="text-xl font-bold">BarberPro</span>
+            <Image src={logo} alt="BarberPro" className="h-10 w-10 rounded-2xl" />
+            <span className="text-xl font-bold">Estudio Cassiana Nunes</span>
           </Button>
 
           <nav className="hidden md:flex items-center gap-6">
