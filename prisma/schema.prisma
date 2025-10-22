@@ -8,12 +8,38 @@ generator client {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   name      String
-  email     String   @unique
+  email     String         @unique
   password  String
-  role      Role     @default(BARBER)
-  createdAt DateTime @default(now())
+  role      Role           @default(BARBER)
+  createdAt DateTime       @default(now())
+
+  // Relacionamento com barbeiro (1:1)
+  barbeiroInfo BarbeiroInfo?
+}
+
+model BarbeiroInfo {
+  id              Int        @id @default(autoincrement())
+  foto            String?
+  horarioTrabalho String?
+  status          String      @default("ativo")
+
+  // Relacionamento com o User (1:1)
+  userId          Int         @unique
+  user            User        @relation(fields: [userId], references: [id])
+
+  // Relacionamento com serviços (1:N)
+  servicos        Servico[]
+}
+
+model Servico {
+  id          Int           @id @default(autoincrement())
+  nome        String
+  preco       Float
+  duracao     Int            // em minutos, por exemplo
+  barbeiroId  Int
+  barbeiro    BarbeiroInfo   @relation(fields: [barbeiroId], references: [id])
 }
 
 enum Role {
