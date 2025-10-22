@@ -3,6 +3,8 @@
 export interface Barbeiro {
   id: string;
   nome: string;
+  email: string;
+  password?: string;
   foto: string;
   horarioTrabalho: string;
   status: 'ativo' | 'inativo';
@@ -48,6 +50,7 @@ export const barbeiros: Barbeiro[] = [
   {
     id: '1',
     nome: 'João Silva',
+    email: '0mNtT@example.com',
     foto: 'https://i.pravatar.cc/150?img=12',
     horarioTrabalho: '09:00 - 18:00',
     status: 'ativo',
@@ -56,6 +59,7 @@ export const barbeiros: Barbeiro[] = [
   {
     id: '2',
     nome: 'Pedro Santos',
+    email: 'HcMlS@example.com',
     foto: 'https://i.pravatar.cc/150?img=13',
     horarioTrabalho: '10:00 - 19:00',
     status: 'ativo',
@@ -64,6 +68,7 @@ export const barbeiros: Barbeiro[] = [
   {
     id: '3',
     nome: 'Carlos Mendes',
+    email: 'yGf2o@example.com',
     foto: 'https://i.pravatar.cc/150?img=14',
     horarioTrabalho: '09:00 - 17:00',
     status: 'ativo',
