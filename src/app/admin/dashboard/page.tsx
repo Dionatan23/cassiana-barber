@@ -4,7 +4,6 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import { Card } from "@/components/ui/card";
 import { Calendar, Users, TrendingUp, Clock } from "lucide-react";
 import { agendamentos, barbeiros } from "@/lib/mockData";
-import Image from "next/image";
 
 export default function AdminDashboard() {
   const agendamentosHoje = agendamentos.filter(
@@ -19,7 +18,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex min-h-screen w-full">
-      {/* <AdminSidebar /> */}
+      <AdminSidebar />
 
       <main className="flex-1 p-4 lg:p-8 bg-background pt-20 lg:pt-8">
         <div className="mb-6 lg:mb-8">
@@ -88,13 +87,6 @@ export default function AdminDashboard() {
           <Card className="p-6 shadow-card">
             <h2 className="text-xl font-bold mb-4">Barbeiro do Mês</h2>
             <div className="flex items-center gap-4">
-              {/* <Image
-                width={64}
-                height={64}
-                src={barbeiroMaisAtendimentos.foto}
-                alt={barbeiroMaisAtendimentos.nome}
-                className="h-16 w-16 rounded-full"
-              /> */}
               <div>
                 <p className="font-bold text-lg">
                   {barbeiroMaisAtendimentos.nome}

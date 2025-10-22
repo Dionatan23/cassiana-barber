@@ -32,11 +32,6 @@ export default function AdminBarbeiros() {
           {barbeiros.map((barbeiro) => (
             <Card key={barbeiro.id} className="p-6 shadow-card">
               <div className="flex items-start gap-4 mb-4">
-                <img 
-                  src={barbeiro.foto} 
-                  alt={barbeiro.nome}
-                  className="h-16 w-16 rounded-full"
-                />
                 <div className="flex-1">
                   <h3 className="font-bold text-lg mb-1">{barbeiro.nome}</h3>
                   <Badge className={
