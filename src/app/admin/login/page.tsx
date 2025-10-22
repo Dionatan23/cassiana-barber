@@ -1,31 +1,40 @@
 "use client";
 
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
 import { Lock, Mail } from 'lucide-react';
 import logo from '@/assets/logo.png';
 import Image from 'next/image';
+import { signIn } from "next-auth/react";
 
 export default function AdminLogin() {
   const router = useRouter();
-  const { login } = useAuth();
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (login(email, senha, 'admin')) {
-      toast.success('Login realizado com sucesso!');
-      router.push('/admin');
+
+    const res = await signIn("credentials", {
+      redirect: false,
+      email,
+      password,
+    });
+
+    if (!res?.error) {
+      // Pega a sessão para saber quem é o usuário
+      const session = await fetch("/api/auth/session").then((r) => r.json());
+
+      if (session?.user?.role === "ADMIN") router.push("/admin/dashboard");
+      else if (session?.user?.role === "BARBEIRO") router.push("/barbeiro/agenda");
+      else router.push("/");
     } else {
-      toast.error('E-mail ou senha incorretos');
+      toast.error("Email ou senha incorretos");
     }
   };
 
@@ -63,8 +72,8 @@ export default function AdminLogin() {
               id="senha"
               type="password"
               placeholder="••••••"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>

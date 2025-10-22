@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+
 import { 
   Calendar, 
   Users, 
@@ -15,6 +15,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import logo from '@/assets/logo.png';
 import { useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Dashboard', path: '/admin' },
@@ -33,8 +35,8 @@ export default function AdminSidebar() {
   const SidebarContent = () => (
     <>
       <div className="p-6 border-b border-sidebar-border">
-        <Link to="/admin" className="flex items-center gap-3" onClick={() => setOpen(false)}>
-          <img src={logo} alt="BarberPro" className="h-10 w-10" />
+        <Link href="/admin" className="flex items-center gap-3" onClick={() => setOpen(false)}>
+          <Image src={logo} alt="BarberPro" className="h-10 w-10" />
           <div>
             <h1 className="font-bold text-lg">BarberPro</h1>
             <p className="text-xs text-muted-foreground">Painel Admin</p>
@@ -50,7 +52,7 @@ export default function AdminSidebar() {
           return (
             <Link
               key={item.path}
-              to={item.path}
+              href={item.path}
               onClick={() => setOpen(false)}
               className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive

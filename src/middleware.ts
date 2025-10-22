@@ -4,7 +4,13 @@ export default withAuth(
   // Configurações de autorização (opcional)
   {
     callbacks: {
-      authorized: ({ token }) => !!token, // só permite acesso se tiver token
+      authorized: ({ token, req }) => {
+        // Libera acesso à tela de login do ADM
+        const { pathname } = req.nextUrl;
+        if (pathname.startsWith("/admin/login")) return true;
+        if (pathname.startsWith("/barbeiro/login")) return true;
+        return !!token;
+      },
     },
   }
 );
@@ -12,4 +18,3 @@ export default withAuth(
 export const config = {
   matcher: ["/admin/:path*", "/barbeiro/:path*"], // rotas protegidas
 };
-

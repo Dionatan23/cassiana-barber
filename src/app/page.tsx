@@ -189,14 +189,14 @@ export default function Home() {
           <p>&copy; 2025 BarberPro. Todos os direitos reservados.</p>
           <div className="mt-4 space-x-4">
             <Button
-              onClick={() => router.push("/agenda")}
-              className="hover:text-primary transition-colors"
+              onClick={() => router.push("/admin/login")}
+              className="hover:text-primary transition-colors cursor-pointer"
             >
               Área Admin
             </Button>
             <Button
-              onClick={() => router.push("/agenda")}
-              className="hover:text-primary transition-colors"
+              onClick={() => router.push("/barbeiro/login")}
+              className="hover:text-primary transition-colors cursor-pointer"
             >
               Área do Barbeiro
             </Button>
