@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Studio Cssiana Nunes",
+  title: "Studio Cassiana Nunes",
   description: "Barbearia - O melhor estilo para você!",
 };
 
