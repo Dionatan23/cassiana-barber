@@ -1,36 +1,36 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { barbeiros as initialBarbeiros, Barbeiro } from "@/lib/mockData";
-import { Plus, Edit, Calendar } from "lucide-react";
+import { Plus, Edit, Calendar, Info } from "lucide-react";
 import { toast } from "sonner";
-import { ModalBarbeiro } from "../components/modalBarbeiro";
 import { useState } from "react";
+import { ModalBarbeiro } from "../components/modalBarbeiro";
+import { ModalInfoBarbeiros } from "../components/modalInfoBarbeiros";
+import { useBarbeiros } from "@/hooks/useBarbeiros";
 
 export default function AdminBarbeiros() {
-  const [barbeiros, setBarbeiros] = useState<Barbeiro[]>(initialBarbeiros);
+  const { barbeiros, loading, refetch } = useBarbeiros();
   const [formDialogOpen, setFormDialogOpen] = useState(false);
-  const [selectedBarbeiro, setSelectedBarbeiro] = useState<Barbeiro | null>(
-    null
-  );
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [selectedBarbeiro, setSelectedBarbeiro] = useState<any>(null);
+
   const handleAddBarbeiro = () => {
     setSelectedBarbeiro(null);
     setFormDialogOpen(true);
   };
-  const handleSaveBarbeiro = (barbeiro: Barbeiro) => {
-    if (selectedBarbeiro) {
-      setBarbeiros(barbeiros.map((b) => (b.id === barbeiro.id ? barbeiro : b)));
-    } else {
-      setBarbeiros([...barbeiros, barbeiro]);
-    }
+
+  const handleOpenInfo = (barbeiro: any) => {
+    setSelectedBarbeiro(barbeiro);
+    setInfoModalOpen(true);
   };
+
   return (
     <div className="flex min-h-screen w-full">
       <AdminSidebar />
-
       <main className="flex-1 p-8 bg-background">
         <div className="mb-8 flex items-center justify-between">
           <div>
@@ -46,62 +46,82 @@ export default function AdminBarbeiros() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {barbeiros.map((barbeiro) => (
-            <Card key={barbeiro.id} className="p-6 shadow-card">
-              <div className="flex items-start gap-4 mb-4">
-                <div className="flex-1">
-                  <h3 className="font-bold text-lg mb-1">{barbeiro.nome}</h3>
-                  <Badge
-                    className={
-                      barbeiro.status === "ativo"
-                        ? "bg-success/20 text-success"
-                        : "bg-muted text-muted-foreground"
+        {loading ? (
+          <p>Carregando barbeiros...</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {barbeiros.map((barbeiro) => (
+              <Card key={barbeiro.id} className="p-6 shadow-card">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="font-bold text-lg mb-1">{barbeiro.name}</h3>
+                    <Badge
+                      className={
+                        barbeiro.barbeiroInfo.status === "ativo"
+                          ? "bg-success/20 text-success"
+                          : "bg-muted text-muted-foreground"
+                      }
+                    >
+                      {barbeiro.barbeiroInfo.status === "ativo"
+                        ? "Ativo"
+                        : "Inativo"}
+                    </Badge>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => handleOpenInfo(barbeiro)}
+                  >
+                    <Info className="h-4 w-4" />
+                  </Button>
+                </div>
+
+                <div className="space-y-2 mb-4">
+                  <p className="text-sm text-muted-foreground">
+                    <strong>Horário:</strong>{" "}
+                    {barbeiro.barbeiroInfo.horarioTrabalho || "—"}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    <strong>E-mail:</strong> {barbeiro.email}
+                  </p>
+                </div>
+
+                <div className="flex gap-2">
+                  <Button
+                    variant="outline"
+                    className="flex-1"
+                    onClick={() =>
+                      toast.info("Funcionalidade em desenvolvimento")
                     }
                   >
-                    {barbeiro.status === "ativo" ? "Ativo" : "Inativo"}
-                  </Badge>
+                    <Edit className="mr-2 h-4 w-4" />
+                    Editar
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      toast.info("Funcionalidade em desenvolvimento")
+                    }
+                  >
+                    <Calendar className="h-4 w-4" />
+                  </Button>
                 </div>
-              </div>
+              </Card>
+            ))}
+          </div>
+        )}
 
-              <div className="space-y-2 mb-4">
-                <p className="text-sm text-muted-foreground">
-                  <strong>Horário:</strong> {barbeiro.horarioTrabalho}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  <strong>Serviços:</strong> {barbeiro.servicos.length}{" "}
-                  cadastrados
-                </p>
-              </div>
-
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() =>
-                    toast.info("Funcionalidade em desenvolvimento")
-                  }
-                >
-                  <Edit className="mr-2 h-4 w-4" />
-                  Editar
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() =>
-                    toast.info("Funcionalidade em desenvolvimento")
-                  }
-                >
-                  <Calendar className="h-4 w-4" />
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
         <ModalBarbeiro
           open={formDialogOpen}
           onOpenChange={setFormDialogOpen}
           barbeiro={selectedBarbeiro}
-          onSave={handleSaveBarbeiro}
+          // onSuccess={refetch} // atualiza lista ao salvar
+        />
+
+        <ModalInfoBarbeiros
+          open={infoModalOpen}
+          onOpenChange={setInfoModalOpen}
+          barbeiro={selectedBarbeiro}
         />
       </main>
     </div>

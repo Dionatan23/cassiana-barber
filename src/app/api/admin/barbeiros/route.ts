@@ -74,3 +74,23 @@ export async function POST(req: Request) {
     );
   }
 }
+
+// ✅ Listagem de barbeiros
+export async function GET() {
+  try {
+    const barbeiros = await prisma.user.findMany({
+      where: { role: 'BARBER' },
+      include: {
+        barbeiroInfo: true, // inclui as informações do barbeiro
+      },
+      orderBy: {
+        name: 'asc',
+      },
+    });
+
+    return NextResponse.json(barbeiros, { status: 200 });
+  } catch (error) {
+    console.error('Erro ao listar barbeiros:', error);
+    return NextResponse.json({ error: 'Erro ao buscar barbeiros.' }, { status: 500 });
+  }
+}
