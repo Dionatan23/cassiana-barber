@@ -8,6 +8,7 @@ export interface Barbeiro {
   id: number;
   name: string;
   email: string;
+  password: string;
   barbeiroInfo: {
     foto: string | null;
     horarioTrabalho: string | null;

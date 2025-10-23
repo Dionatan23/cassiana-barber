@@ -3,10 +3,10 @@ import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 import { authOptions } from '@/lib/auth';
+import { decrypt, encrypt } from '@/lib/cryptoUtils';
 
 export async function POST(req: Request) {
   try {
-    // 🔐 Verifica se o usuário está logado e é admin
     const session = await getServerSession(authOptions);
 
     if (!session || session.user.role !== 'ADMIN') {
@@ -16,7 +16,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // 📦 Lê os dados enviados no corpo da requisição
     const { nome, email, password, foto, horarioTrabalho, status } = await req.json();
 
     if (!nome || !email || !password) {
@@ -26,27 +25,25 @@ export async function POST(req: Request) {
       );
     }
 
-    // 🔍 Verifica se já existe um usuário com esse email
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
-      return NextResponse.json(
-        { error: 'Já existe um usuário com este e-mail.' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Já existe um usuário com este e-mail.' }, { status: 400 });
     }
 
-    // 🔑 Cria o usuário do barbeiro
     const hashedPassword = await bcrypt.hash(password, 10);
+    const encryptedPassword = encrypt(password); // 🔐 senha reversível
+
     const newUser = await prisma.user.create({
       data: {
         name: nome,
         email,
         password: hashedPassword,
         role: 'BARBER',
+        // armazenamos a senha criptografada reversível
+        passwordEncrypted: encryptedPassword,
       },
     });
 
-    // 🧾 Cria o registro na tabela BarbeiroInfo
     const barbeiroInfo = await prisma.barbeiroInfo.create({
       data: {
         userId: newUser.id,
@@ -68,27 +65,26 @@ export async function POST(req: Request) {
     );
   } catch (error) {
     console.error('Erro ao criar barbeiro:', error);
-    return NextResponse.json(
-      { error: 'Erro ao criar barbeiro.' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Erro ao criar barbeiro.' }, { status: 500 });
   }
 }
 
-// ✅ Listagem de barbeiros
 export async function GET() {
   try {
     const barbeiros = await prisma.user.findMany({
       where: { role: 'BARBER' },
-      include: {
-        barbeiroInfo: true, // inclui as informações do barbeiro
-      },
-      orderBy: {
-        name: 'asc',
-      },
+      include: { barbeiroInfo: true },
+      orderBy: { name: 'asc' },
     });
 
-    return NextResponse.json(barbeiros, { status: 200 });
+    const barbeirosComSenha = barbeiros.map((barbeiro) => ({
+      ...barbeiro,
+      password: barbeiro.passwordEncrypted
+        ? decrypt(barbeiro.passwordEncrypted)
+        : null,
+    }));
+
+    return NextResponse.json(barbeirosComSenha, { status: 200 });
   } catch (error) {
     console.error('Erro ao listar barbeiros:', error);
     return NextResponse.json({ error: 'Erro ao buscar barbeiros.' }, { status: 500 });

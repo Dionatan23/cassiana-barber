@@ -68,11 +68,12 @@ export default function AdminBarbeiros() {
                     </Badge>
                   </div>
                   <Button
+                    className="cursor-pointer"
                     variant="ghost"
                     size="icon"
                     onClick={() => handleOpenInfo(barbeiro)}
                   >
-                    <Info className="h-4 w-4" />
+                    <Info className="h-6 w-6" />
                   </Button>
                 </div>
 
