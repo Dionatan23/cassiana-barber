@@ -116,7 +116,7 @@ export default function AdminBarbeiros() {
           open={formDialogOpen}
           onOpenChange={setFormDialogOpen}
           barbeiro={selectedBarbeiro}
-          // onSuccess={refetch} // atualiza lista ao salvar
+          onSuccess={refetch} 
         />
 
         <ModalInfoBarbeiros
