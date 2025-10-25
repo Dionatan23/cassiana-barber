@@ -94,11 +94,13 @@ export async function PUT(
 // =========================
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const { id } = await context.params;
+    const barbeiroId = Number(id);
 
+    const session = await getServerSession(authOptions);
     if (!session || session.user.role !== "ADMIN") {
       return NextResponse.json(
         {
@@ -108,8 +110,6 @@ export async function DELETE(
         { status: 403 }
       );
     }
-
-    const barbeiroId = params.id;
 
     const existing = await prisma.user.findUnique({
       where: { id: Number(barbeiroId) },

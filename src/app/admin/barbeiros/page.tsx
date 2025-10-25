@@ -33,6 +33,29 @@ export default function AdminBarbeiros() {
     setFormDialogOpen(true);
   };
 
+const handleDeleteBarbeiro = async (barbeiroId: number) => {
+  if (!confirm("Tem certeza que deseja excluir este barbeiro?")) return;
+
+  try {
+    const res = await fetch(`/api/admin/barbeiros/${barbeiroId}`, {
+      method: "DELETE",
+    });
+
+    if (!res.ok) {
+      const errorData = await res.json();
+      toast.error(errorData.error || "Erro ao excluir barbeiro");
+      return;
+    }
+
+    toast.success("Barbeiro excluído com sucesso!");
+    refetch(); // atualiza a lista de barbeiros
+  } catch (error) {
+    console.error("Erro ao excluir barbeiro:", error);
+    toast.error("Erro ao excluir barbeiro");
+  }
+};
+
+
   return (
     <div className="flex min-h-screen w-full">
       <AdminSidebar />
@@ -103,9 +126,7 @@ export default function AdminBarbeiros() {
                   </Button>
                   <Button
                     variant="outline"
-                    onClick={() =>
-                      toast.info("Funcionalidade em desenvolvimento")
-                    }
+                    onClick={() => handleDeleteBarbeiro(barbeiro.id)}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
