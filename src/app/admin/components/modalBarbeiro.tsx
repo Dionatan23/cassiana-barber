@@ -36,7 +36,7 @@ export function ModalBarbeiro({
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Barbeiro>>({
-    nome: "",
+    name: "",
     foto: "",
     horarioTrabalho: "",
     status: "ativo",
@@ -51,7 +51,7 @@ export function ModalBarbeiro({
         setFormData(barbeiro);
       } else {
         setFormData({
-          nome: "",
+          name: "",
           foto: "",
           horarioTrabalho: "",
           status: "ativo",
@@ -68,17 +68,17 @@ export function ModalBarbeiro({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.nome || !formData.horarioTrabalho) {
+    if (!formData.name || !formData.horarioTrabalho) {
       toast.error("Preencha todos os campos obrigatórios");
       return;
     }
 
-    const generateEmail = (nome: string) =>
-      nome.toLowerCase().replace(/\s+/g, ".") + "@barbearia.com";
+    const generateEmail = (name: string) =>
+      name.toLowerCase().replace(/\s+/g, ".") + "@barbearia.com";
 
     const barbeiroData = {
-      nome: formData.nome!,
-      email: formData.email || generateEmail(formData.nome!),
+      name: formData.name!,
+      email: formData.email || generateEmail(formData.name!),
       password: formData.password || "barbeiro123",
       horarioTrabalho: formData.horarioTrabalho!,
       status: formData.status || "ativo",
@@ -87,8 +87,13 @@ export function ModalBarbeiro({
     try {
       setLoading(true);
 
-      const res = await fetch("/api/admin/barbeiros", {
-        method: "POST",
+      const method = barbeiro ? "PUT" : "POST";
+      const url = barbeiro
+        ? `/api/admin/barbeiros/${Number(barbeiro.id)}`
+        : "/api/admin/barbeiros";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(barbeiroData),
       });
@@ -99,7 +104,12 @@ export function ModalBarbeiro({
         throw new Error(result.error || "Erro ao cadastrar barbeiro");
       }
 
-      toast.success("Barbeiro cadastrado com sucesso!");
+      toast.success(
+        barbeiro
+          ? "Barbeiro atualizado com sucesso!"
+          : "Barbeiro cadastrado com sucesso!"
+      );
+
       onOpenChange(false);
       if (onSuccess) {
         await onSuccess();
@@ -123,14 +133,14 @@ export function ModalBarbeiro({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="nome">Nome *</Label>
+            <Label htmlFor="name">name *</Label>
             <Input
-              id="nome"
-              value={formData.nome}
+              id="name"
+              value={formData.name}
               onChange={(e) =>
-                setFormData({ ...formData, nome: e.target.value })
+                setFormData({ ...formData, name: e.target.value })
               }
-              placeholder="Nome completo"
+              placeholder="name completo"
             />
           </div>
 

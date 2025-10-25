@@ -5,7 +5,7 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Edit, Calendar, Info } from "lucide-react";
+import { Plus, Edit, Info, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { ModalBarbeiro } from "../components/modalBarbeiro";
@@ -26,6 +26,11 @@ export default function AdminBarbeiros() {
   const handleOpenInfo = (barbeiro: any) => {
     setSelectedBarbeiro(barbeiro);
     setInfoModalOpen(true);
+  };
+
+  const handleEditBarbeiro = (barbeiro: any) => {
+    setSelectedBarbeiro(barbeiro);
+    setFormDialogOpen(true);
   };
 
   return (
@@ -91,9 +96,7 @@ export default function AdminBarbeiros() {
                   <Button
                     variant="outline"
                     className="flex-1"
-                    onClick={() =>
-                      toast.info("Funcionalidade em desenvolvimento")
-                    }
+                    onClick={() => handleEditBarbeiro(barbeiro)}
                   >
                     <Edit className="mr-2 h-4 w-4" />
                     Editar
@@ -104,7 +107,7 @@ export default function AdminBarbeiros() {
                       toast.info("Funcionalidade em desenvolvimento")
                     }
                   >
-                    <Calendar className="h-4 w-4" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </Card>
@@ -116,7 +119,7 @@ export default function AdminBarbeiros() {
           open={formDialogOpen}
           onOpenChange={setFormDialogOpen}
           barbeiro={selectedBarbeiro}
-          onSuccess={refetch} 
+          onSuccess={refetch}
         />
 
         <ModalInfoBarbeiros
