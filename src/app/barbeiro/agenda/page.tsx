@@ -21,7 +21,7 @@ export default function BarbeiroAgenda() {
       barbeiroId: 1,    
     };
   
-  const meusAgendamentos = agendamentos.filter(a => a.barbeiroId === user?.barbeiroId);
+  const meusAgendamentos = agendamentos.filter(a => Number(a.barbeiroId) === user?.barbeiroId);
   const [lista, setLista] = useState(meusAgendamentos);
 
   const getStatusBadge = (status: string) => {
@@ -45,7 +45,6 @@ export default function BarbeiroAgenda() {
   };
 
   const handleLogout = () => {
-    logout();
     router.push('/');
   };
 
@@ -70,7 +69,7 @@ export default function BarbeiroAgenda() {
                 className="hidden sm:flex"
               >
                 <User className="mr-2 h-4 w-4" />
-                {user?.nome}
+                {user?.name}
               </Button>
               <Button 
                 variant="ghost" 
@@ -162,10 +161,10 @@ export default function BarbeiroAgenda() {
                       <div className="h-auto lg:h-12 w-px bg-border hidden lg:block" />
                       
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-bold text-lg lg:text-xl mb-1">{agendamento.clienteNome}</h3>
+                        <h3 className="font-bold text-lg lg:text-xl mb-1">{agendamento.clientename}</h3>
                         <p className="text-muted-foreground text-sm mb-2">{agendamento.clienteTelefone}</p>
                         <div className="flex flex-wrap items-center gap-2 lg:gap-3">
-                          <span className="text-sm font-medium">{servico?.nome}</span>
+                          <span className="text-sm font-medium">{servico?.name}</span>
                           <span className="flex items-center gap-1 text-sm text-muted-foreground">
                             <Clock className="h-3 w-3" />
                             {servico?.duracao} min

@@ -21,7 +21,7 @@ export default function BarbeiroLogin() {
   const [loading, setLoading] = useState(false);
 
   // captura o callbackUrl (enviado pelo middleware)
-  const callbackUrl = searchParams.get("callbackUrl") || "/barbeiro/dashboard";
+  const callbackUrl = searchParams.get("callbackUrl") || "/barbeiro/agenda";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
