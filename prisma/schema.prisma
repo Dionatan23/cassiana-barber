@@ -43,6 +43,16 @@ model Servico {
   barbeiro   BarbeiroInfo @relation(fields: [barbeiroId], references: [id])
 }
 
+model ServicoGlobal {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  descricao    String?
+  preco        Float
+  duracao      Int // em minutos
+  criadoEm     DateTime @default(now())
+  atualizadoEm DateTime @updatedAt
+}
+
 enum Role {
   ADMIN
   BARBER
