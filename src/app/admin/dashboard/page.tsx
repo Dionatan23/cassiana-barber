@@ -89,7 +89,7 @@ export default function AdminDashboard() {
             <div className="flex items-center gap-4">
               <div>
                 <p className="font-bold text-lg">
-                  {barbeiroMaisAtendimentos.nome}
+                  {barbeiroMaisAtendimentos.name}
                 </p>
                 <p className="text-sm text-muted-foreground">
                   Horário: {barbeiroMaisAtendimentos.horarioTrabalho}
@@ -115,9 +115,9 @@ export default function AdminDashboard() {
                     className="flex items-center justify-between p-3 bg-secondary rounded-lg"
                   >
                     <div>
-                      <p className="font-semibold">{agendamento.clienteNome}</p>
+                      <p className="font-semibold">{agendamento.clientename}</p>
                       <p className="text-sm text-muted-foreground">
-                        {barbeiro?.nome}
+                        {barbeiro?.name}
                       </p>
                     </div>
                     <div className="text-right">

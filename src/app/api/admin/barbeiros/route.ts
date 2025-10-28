@@ -16,11 +16,11 @@ export async function POST(req: Request) {
       );
     }
 
-    const { nome, email, password, foto, horarioTrabalho, status } = await req.json();
+    const { name, email, password, foto, horarioTrabalho, status } = await req.json();
 
-    if (!nome || !email || !password) {
+    if (!name || !email || !password) {
       return NextResponse.json(
-        { error: 'Campos obrigatórios ausentes (nome, email, senha).' },
+        { error: 'Campos obrigatórios ausentes (name, email, senha).' },
         { status: 400 }
       );
     }
@@ -35,7 +35,7 @@ export async function POST(req: Request) {
 
     const newUser = await prisma.user.create({
       data: {
-        name: nome,
+        name: name,
         email,
         password: hashedPassword,
         role: 'BARBER',
