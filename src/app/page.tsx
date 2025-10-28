@@ -1,22 +1,34 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Scissors, Clock, Star, MapPin, Phone, Mail } from "lucide-react";
+import { Scissors, Clock, MapPin, Phone, Mail } from "lucide-react";
 import heroImage from "@/assets/hero-barbershop.jpg";
-import { servicos } from "@/lib/mockData";
+import { useEffect, useState } from "react";
+import { ServicoGlobalProps } from "./admin/servicos/page";
 
 export default function Home() {
   const router = useRouter();
-  const iconMap: Record<string, any> = {
-    Scissors,
-    Razor: Scissors,
-    Sparkles: Star,
-    Star,
-    Brush: Scissors,
+  const [servicos, setServicos] = useState<ServicoGlobalProps[]>([]);
+
+  const fetchServicos = async () => {
+    try {
+      const response = await fetch("/api/admin/servico");
+      if (!response.ok) {
+        throw new Error("Erro ao buscar serviços.");
+      }
+      const data = await response.json();
+      setServicos(data);
+    } catch (error) {
+      console.error("Erro ao buscar serviços:", error);
+    }
   };
+
+  useEffect(() => {
+    fetchServicos();
+  }, []);
 
   return (
     <div className="min-h-screen">
@@ -73,16 +85,16 @@ export default function Home() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {servicos.map((servico) => {
-              const Icon = iconMap[servico.icone] || Scissors;
+              
               return (
                 <Card
                   key={servico.id}
                   className="p-6 shadow-card hover:shadow-glow transition-all duration-300"
                 >
                   <div className="flex items-start gap-4">
-                    <div className="p-3 bg-primary/10 rounded-lg">
+                    {/* <div className="p-3 bg-primary/10 rounded-lg">
                       <Icon className="h-6 w-6 text-primary" />
-                    </div>
+                    </div> */}
                     <div className="flex-1">
                       <h3 className="font-bold text-xl mb-2">{servico.nome}</h3>
                       <p className="text-muted-foreground mb-3">
@@ -105,7 +117,9 @@ export default function Home() {
       <section className="py-20 bg-gray-800">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 className="text-4xl font-bold mb-8">Horários de Funcionamento</h2>
+            <h2 className="text-4xl font-bold mb-8">
+              Horários de Funcionamento
+            </h2>
             <div className="space-y-4 text-lg">
               <div className="flex justify-between items-center p-4 bg-background rounded-lg">
                 <span className="font-medium">Segunda a Sexta</span>

@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { ModalAddServico } from "../components/modalAddServico";
 import { useEffect, useState } from "react";
 
-interface Servico {
+export interface ServicoGlobalProps {
   id: string;
   nome: string;
   preco: number;
@@ -18,7 +18,7 @@ interface Servico {
 export default function AdminServicos() {
   const [openServicos, setOpenServicos] = useState(false);
   const handleAddServicoOpen = () => setOpenServicos(true);
-  const [servicos, setServicos] = useState<Servico[]>([]);
+  const [servicos, setServicos] = useState<ServicoGlobalProps[]>([]);
 
   const fetchServicos = async () => {
     try {
