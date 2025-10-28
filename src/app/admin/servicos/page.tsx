@@ -3,15 +3,39 @@
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { servicos } from "@/lib/mockData";
 import { Plus, Edit, Trash2, Clock, DollarSign } from "lucide-react";
 import { toast } from "sonner";
 import { ModalAddServico } from "../components/modalAddServico";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface Servico {
+  id: string;
+  nome: string;
+  preco: number;
+  duracao: number;
+}
 
 export default function AdminServicos() {
   const [openServicos, setOpenServicos] = useState(false);
   const handleAddServicoOpen = () => setOpenServicos(true);
+  const [servicos, setServicos] = useState<Servico[]>([]);
+
+  const fetchServicos = async () => {
+    try {
+      const response = await fetch("/api/admin/servico");
+      if (!response.ok) {
+        throw new Error("Erro ao buscar serviços.");
+      }
+      const data = await response.json();
+      setServicos(data);
+    } catch (error) {
+      console.error("Erro ao buscar serviços:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchServicos();
+  }, []);
 
   return (
     <div className="flex min-h-screen w-full">
@@ -41,7 +65,7 @@ export default function AdminServicos() {
               className="p-6 shadow-card hover:shadow-glow transition-all"
             >
               <div className="mb-4">
-                <h3 className="font-bold text-xl mb-2">{servico.name}</h3>
+                <h3 className="font-bold text-xl mb-2">{servico.nome}</h3>
                 <div className="flex items-center gap-4 text-muted-foreground">
                   <span className="flex items-center gap-1 text-sm">
                     <Clock className="h-4 w-4" />
