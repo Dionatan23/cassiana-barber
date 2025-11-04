@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Plus, Edit, Trash2, Clock, DollarSign } from "lucide-react";
 import { ModalAddServico } from "../components/modalAddServico";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export interface ServicoGlobalProps {
   id: string;
@@ -16,7 +17,8 @@ export interface ServicoGlobalProps {
 
 export default function AdminServicos() {
   const [openServicos, setOpenServicos] = useState(false);
-  const [selectedServico, setSelectedServico] = useState<ServicoGlobalProps | null>(null);
+  const [selectedServico, setSelectedServico] =
+    useState<ServicoGlobalProps | null>(null);
   const [servicos, setServicos] = useState<ServicoGlobalProps[]>([]);
 
   const handleAddServicoOpen = () => setOpenServicos(true);
@@ -24,6 +26,25 @@ export default function AdminServicos() {
     setSelectedServico(servico);
     console.log(servico);
     setOpenServicos(true);
+  };
+
+  const handleDeleteServico = async (id: string) => {
+    if (!confirm("Tem certeza que deseja excluir esse serviço?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/admin/servico/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Erro ao excluir serviços.");
+      }
+      await fetchServicos();
+      toast.success("Serviço excluído com sucesso!");
+    } catch (error) {
+      console.error("Erro ao excluir serviços:", error);
+    }
   };
 
   const fetchServicos = async () => {
@@ -96,7 +117,7 @@ export default function AdminServicos() {
                 <Button
                   className="cursor-pointer"
                   variant="outline"
-                  onClick={() => alert("Funcionalidade em desenvolvimento")}
+                  onClick={() => handleDeleteServico(servico.id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
