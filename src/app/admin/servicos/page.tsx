@@ -4,7 +4,6 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Plus, Edit, Trash2, Clock, DollarSign } from "lucide-react";
-import { toast } from "sonner";
 import { ModalAddServico } from "../components/modalAddServico";
 import { useEffect, useState } from "react";
 
@@ -17,8 +16,10 @@ export interface ServicoGlobalProps {
 
 export default function AdminServicos() {
   const [openServicos, setOpenServicos] = useState(false);
-  const handleAddServicoOpen = () => setOpenServicos(true);
   const [servicos, setServicos] = useState<ServicoGlobalProps[]>([]);
+
+
+  const handleAddServicoOpen = () => setOpenServicos(true);
 
   const fetchServicos = async () => {
     try {
@@ -50,7 +51,7 @@ export default function AdminServicos() {
             </p>
           </div>
           <Button
-            className="gradient-primary shadow-glow"
+            className="gradient-primary shadow-glow cursor-pointer"
             onClick={handleAddServicoOpen}
           >
             <Plus className="mr-2 h-4 w-4" />
@@ -81,18 +82,19 @@ export default function AdminServicos() {
               <div className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 cursor-pointer"
                   onClick={() =>
-                    toast.info("Funcionalidade em desenvolvimento")
+                    alert("Funcionalidade em desenvolvimento")
                   }
                 >
-                  <Edit className="mr-2 h-4 w-4" />
+                  <Edit className="mr-2 h-4 w-4 cursor-pointer" />
                   Editar
                 </Button>
                 <Button
+                className="cursor-pointer"
                   variant="outline"
                   onClick={() =>
-                    toast.info("Funcionalidade em desenvolvimento")
+                    alert("Funcionalidade em desenvolvimento")
                   }
                 >
                   <Trash2 className="h-4 w-4" />
