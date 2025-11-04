@@ -16,10 +16,15 @@ export interface ServicoGlobalProps {
 
 export default function AdminServicos() {
   const [openServicos, setOpenServicos] = useState(false);
+  const [selectedServico, setSelectedServico] = useState<ServicoGlobalProps | null>(null);
   const [servicos, setServicos] = useState<ServicoGlobalProps[]>([]);
 
-
   const handleAddServicoOpen = () => setOpenServicos(true);
+  const handleEdit = (servico: ServicoGlobalProps) => {
+    setSelectedServico(servico);
+    console.log(servico);
+    setOpenServicos(true);
+  };
 
   const fetchServicos = async () => {
     try {
@@ -83,19 +88,15 @@ export default function AdminServicos() {
                 <Button
                   variant="outline"
                   className="flex-1 cursor-pointer"
-                  onClick={() =>
-                    alert("Funcionalidade em desenvolvimento")
-                  }
+                  onClick={() => handleEdit(servico)}
                 >
                   <Edit className="mr-2 h-4 w-4 cursor-pointer" />
                   Editar
                 </Button>
                 <Button
-                className="cursor-pointer"
+                  className="cursor-pointer"
                   variant="outline"
-                  onClick={() =>
-                    alert("Funcionalidade em desenvolvimento")
-                  }
+                  onClick={() => alert("Funcionalidade em desenvolvimento")}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
@@ -104,7 +105,12 @@ export default function AdminServicos() {
           ))}
         </div>
 
-        <ModalAddServico open={openServicos} onOpenChange={setOpenServicos} />
+        <ModalAddServico
+          onSuccess={fetchServicos}
+          servico={selectedServico}
+          open={openServicos}
+          onOpenChange={setOpenServicos}
+        />
       </main>
     </div>
   );

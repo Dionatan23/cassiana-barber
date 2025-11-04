@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,11 +13,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { ServicoGlobalProps } from "../servicos/page";
 
 interface ModalAddServicoProps {
   open: boolean;
   onOpenChange?: (open: boolean) => void;
-  servico?: any | null;
+  servico?: ServicoGlobalProps | null;
   onSuccess?: () => Promise<void>;
 }
 
@@ -34,6 +35,19 @@ export function ModalAddServico({
     preco: servico?.preco?.toString() || "",
     duracao: servico?.duracao?.toString() || "",
   });
+
+  useEffect(() => {
+    if (servico) {
+      setFormData({
+        nome: servico.nome || "",
+        preco: servico.preco?.toString() || "",
+        duracao: servico.duracao?.toString() || "",
+      });
+    } else {
+      // limpa o formulário quando for modo de criação
+      setFormData({ nome: "", preco: "", duracao: "" });
+    }
+  }, [servico]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,7 +78,9 @@ export function ModalAddServico({
       if (!res.ok) throw new Error("Erro ao salvar o serviço.");
 
       toast.success(
-        servico ? "Serviço atualizado com sucesso!" : "Serviço adicionado com sucesso!"
+        servico
+          ? "Serviço atualizado com sucesso!"
+          : "Serviço adicionado com sucesso!"
       );
 
       if (onSuccess) await onSuccess();
@@ -92,7 +108,9 @@ export function ModalAddServico({
             <Input
               id="nome"
               value={formData.nome}
-              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, nome: e.target.value })
+              }
               placeholder="Ex: Corte de cabelo"
             />
           </div>
@@ -104,7 +122,9 @@ export function ModalAddServico({
               type="number"
               step="0.01"
               value={formData.preco}
-              onChange={(e) => setFormData({ ...formData, preco: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, preco: e.target.value })
+              }
               placeholder="Ex: 40.00"
             />
           </div>
@@ -115,7 +135,9 @@ export function ModalAddServico({
               id="duracao"
               type="number"
               value={formData.duracao}
-              onChange={(e) => setFormData({ ...formData, duracao: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, duracao: e.target.value })
+              }
               placeholder="Ex: 30"
             />
           </div>
@@ -129,8 +151,16 @@ export function ModalAddServico({
             >
               Cancelar
             </Button>
-            <Button type="submit" className="gradient-primary" disabled={loading}>
-              {loading ? "Salvando..." : servico ? "Salvar Alterações" : "Cadastrar Serviço"}
+            <Button
+              type="submit"
+              className="gradient-primary"
+              disabled={loading}
+            >
+              {loading
+                ? "Salvando..."
+                : servico
+                ? "Salvar Alterações"
+                : "Cadastrar Serviço"}
             </Button>
           </DialogFooter>
         </form>
