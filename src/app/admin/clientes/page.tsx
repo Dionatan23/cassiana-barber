@@ -20,7 +20,7 @@ export default function AdminClientes() {
           {clientes.map((cliente) => (
             <Card key={cliente.id} className="p-6 shadow-card">
               <div className="mb-4">
-                <h3 className="font-bold text-xl mb-2">{cliente.nome}</h3>
+                <h3 className="font-bold text-xl mb-2">{cliente.name}</h3>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <p className="flex items-center gap-2">
                     <Phone className="h-4 w-4 text-primary" />

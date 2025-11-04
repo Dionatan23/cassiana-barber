@@ -23,12 +23,12 @@ import { usePathname, useRouter } from "next/navigation"; // ✅ substitui useLo
 // 🔹 Itens do menu
 // ==========================
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", path: "/admin" },
+  { icon: LayoutDashboard, label: "Dashboard", path: "/admin/dashboard" },
   { icon: Calendar, label: "Agendamentos", path: "/admin/agendamentos" },
   { icon: Users, label: "Barbeiros", path: "/admin/barbeiros" },
   { icon: Scissors, label: "Serviços", path: "/admin/servicos" },
   { icon: UserCircle, label: "Clientes", path: "/admin/clientes" },
-  { icon: List, label: "Ordem de Chegada", path: "/admin/ordem-chegada" },
+  { icon: List, label: "Ordem de Chegada", path: "/admin/ordemChegada" },
 ];
 
 // ==========================

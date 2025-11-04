@@ -22,7 +22,7 @@ export default function AdminOrdemChegada() {
 
     const novo = {
       id: (fila.length + 1).toString(),
-      clienteNome: novoCliente,
+      clientename: novoCliente,
       horarioChegada: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
       status: 'aguardando' as const
     };
@@ -116,7 +116,7 @@ export default function AdminOrdemChegada() {
                         {index + 1}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-bold text-base lg:text-lg truncate">{cliente.clienteNome}</h3>
+                        <h3 className="font-bold text-base lg:text-lg truncate">{cliente.clientename}</h3>
                         <p className="text-xs lg:text-sm text-muted-foreground flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           Chegou às {cliente.horarioChegada}

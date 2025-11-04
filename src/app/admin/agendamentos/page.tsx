@@ -66,10 +66,10 @@ export default function AdminAgendamentos() {
                   
                   return (
                     <tr key={agendamento.id} className="border-b border-border hover:bg-secondary/50">
-                      <td className="p-4 font-medium">{agendamento.clienteNome}</td>
+                      <td className="p-4 font-medium">{agendamento.clientename}</td>
                       <td className="p-4 text-sm text-muted-foreground">{agendamento.clienteTelefone}</td>
-                      <td className="p-4">{barbeiro?.nome}</td>
-                      <td className="p-4">{servico?.nome}</td>
+                      <td className="p-4">{barbeiro?.name}</td>
+                      <td className="p-4">{servico?.name}</td>
                       <td className="p-4">
                         {new Date(agendamento.data + 'T00:00').toLocaleDateString('pt-BR')}
                       </td>
@@ -122,7 +122,7 @@ export default function AdminAgendamentos() {
                 <div className="space-y-3">
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-bold text-lg mb-1">{agendamento.clienteNome}</h3>
+                      <h3 className="font-bold text-lg mb-1">{agendamento.clientename}</h3>
                       <p className="text-sm text-muted-foreground">{agendamento.clienteTelefone}</p>
                     </div>
                     {getStatusBadge(agendamento.status)}
@@ -133,11 +133,11 @@ export default function AdminAgendamentos() {
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <p className="text-muted-foreground mb-1">Barbeiro</p>
-                      <p className="font-medium">{barbeiro?.nome}</p>
+                      <p className="font-medium">{barbeiro?.name}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground mb-1">Serviço</p>
-                      <p className="font-medium">{servico?.nome}</p>
+                      <p className="font-medium">{servico?.name}</p>
                     </div>
                     <div>
                       <p className="text-muted-foreground mb-1">Data</p>
