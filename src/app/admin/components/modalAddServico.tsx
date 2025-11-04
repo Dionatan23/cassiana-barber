@@ -93,6 +93,11 @@ export function ModalAddServico({
     }
   };
 
+  const handleCancel = () => {
+    onOpenChange?.(false);
+    setFormData({ nome: "", preco: "", duracao: "" });
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px]">
@@ -147,7 +152,7 @@ export function ModalAddServico({
               type="button"
               variant="outline"
               disabled={loading}
-              onClick={() => onOpenChange?.(false)}
+              onClick={handleCancel}
             >
               Cancelar
             </Button>
