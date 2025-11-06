@@ -7,40 +7,48 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// =========================================================
+//  USUÁRIOS
+// =========================================================
 model User {
-  id                Int      @id @default(autoincrement())
-  name              String
-  email             String   @unique
-  password          String
-  passwordEncrypted String?
-  role              Role     @default(BARBER)
-  createdAt         DateTime @default(now())
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(BARBER)
+  createdAt DateTime @default(now())
 
-  // Relacionamento com barbeiro (1:1)
   barbeiroInfo BarbeiroInfo?
 }
 
+// =========================================================
+//  BARBEIROS
+// =========================================================
 model BarbeiroInfo {
-  id              Int     @id @default(autoincrement())
-  foto            String?
-  horarioTrabalho String?
-  status          String  @default("ativo")
+  id     Int     @id @default(autoincrement())
+  foto   String?
+  status String  @default("ativo")
 
-  // Relacionamento com o User (1:1)
   userId Int  @unique
   user   User @relation(fields: [userId], references: [id])
 
-  // Relacionamento com serviços (1:N)
-  servicos Servico[]
+  // Relações
+  servicos         Servico[]
+  agendamentos     Agendamento[]
+  horariosTrabalho HorarioTrabalho[]
 }
 
+// =========================================================
+//  SERVIÇOS
+// =========================================================
 model Servico {
-  id         Int          @id @default(autoincrement())
-  nome       String
-  preco      Float
-  duracao    Int // em minutos, por exemplo
-  barbeiroId Int
-  barbeiro   BarbeiroInfo @relation(fields: [barbeiroId], references: [id])
+  id           Int           @id @default(autoincrement())
+  nome         String
+  preco        Float
+  duracao      Int // minutos
+  barbeiroId   Int?
+  barbeiro     BarbeiroInfo? @relation(fields: [barbeiroId], references: [id])
+  agendamentos Agendamento[]
 }
 
 model ServicoGlobal {
@@ -48,9 +56,72 @@ model ServicoGlobal {
   nome         String
   descricao    String?
   preco        Float
-  duracao      Int // em minutos
+  duracao      Int
   criadoEm     DateTime @default(now())
   atualizadoEm DateTime @updatedAt
+
+  agendamentos Agendamento[]
+}
+
+// =========================================================
+//  HORÁRIOS DE TRABALHO
+// =========================================================
+model HorarioTrabalho {
+  id         Int          @id @default(autoincrement())
+  diaSemana  String // "segunda", "terça", ...
+  horaInicio String // "09:00"
+  horaFim    String // "18:00"
+  barbeiroId Int
+  barbeiro   BarbeiroInfo @relation(fields: [barbeiroId], references: [id])
+}
+
+model HorarioBarbearia {
+  id         Int      @id @default(autoincrement())
+  diaSemana  String // "segunda", "terça", etc.
+  horaInicio String // "09:00"
+  horaFim    String // "18:00"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+// =========================================================
+//  AGENDAMENTOS
+// =========================================================
+model Agendamento {
+  id              Int               @id @default(autoincrement())
+  clienteNome     String
+  clienteTelefone String
+  data            DateTime
+  horaInicio      DateTime
+  horaFim         DateTime
+  status          StatusAgendamento @default(PENDENTE)
+  tipo            TipoAtendimento   @default(AGENDADO)
+
+  barbeiroId Int
+  barbeiro   BarbeiroInfo @relation(fields: [barbeiroId], references: [id])
+
+  servicoId Int?
+  servico   Servico? @relation(fields: [servicoId], references: [id])
+
+  servicoGlobalId Int?
+  servicoGlobal   ServicoGlobal? @relation(fields: [servicoGlobalId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+// =========================================================
+//  ENUMS
+// =========================================================
+enum StatusAgendamento {
+  PENDENTE
+  CONFIRMADO
+  CONCLUIDO
+  CANCELADO
+}
+
+enum TipoAtendimento {
+  AGENDADO
+  ORDEM_CHEGADA
 }
 
 enum Role {
